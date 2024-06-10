@@ -2,6 +2,9 @@ package isok
 
 type FuncSignature[T any] func(a ...interface{}) (T, error)
 
+type Zero struct {
+}
+
 type TwoResult[F any, S any] struct {
 	f F
 	s S
@@ -67,12 +70,19 @@ func ResultFunc[T any](function FuncSignature[T], props ...interface{}) Result[T
 }
 
 func ResultFun1[T any](result T, err error) Result[T] {
-
 	if err != nil {
 		return NewErr[T](err)
 	}
 
 	return NewOk(result)
+}
+
+func ResultFun0(err error) Result[int] {
+	if err != nil {
+		return NewErr[int](err)
+	}
+
+	return NewOk[int](0)
 }
 
 func ResultFunc2[F any, S any](r1 F, r2 S, err error) Result[TwoResult[F, S]] {
